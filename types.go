@@ -48,7 +48,10 @@ type AcmeFile struct {
 
 func (a *AcmeFile) writeTofile () {
 	data, _ := json.MarshalIndent(a, "", "\t")
-	ioutil.WriteFile("test.json", data, 777)
+	// check umask (mine 0022) (666->644)
+	// files are 666, directories are 777
+	// 0644 is enough
+	ioutil.WriteFile("test.json", data, 0644)
 }
 
 func acmeFileBuilder (email string) *AcmeFile {
